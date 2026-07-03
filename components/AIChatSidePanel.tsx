@@ -812,7 +812,9 @@ const AIChatSidePanelActive: React.FC<AIChatSidePanelProps> = ({
 
     for (const agent of discoveredAgents) {
       const target = buildDiscoveredAgentRuntimeModelTarget(agent);
-      if (target) targets.set(target.cacheKey, target);
+      if (!target) continue;
+      if (target.sdkBackend === 'opencode' && !configuredTargetCacheKeys.has(target.cacheKey)) continue;
+      targets.set(target.cacheKey, target);
     }
 
     if (targets.size === 0) return;
